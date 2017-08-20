@@ -11,15 +11,16 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * @author Ben
+ * Class to load the playlist file and put all the uncommented ('#' is comment character) lines into a list
+ * @author ThatsNoMoon
  */
 
 class AutoPlaylist {
 
     final List<String> URLS;
+    private final Logger LOG = Main.LOG;
 
     AutoPlaylist() {
-        Logger LOG = Main.LOG;
         ArrayList<String> tempList = new ArrayList<>();
         try (Stream<String> stream = Files.lines(Paths.get("./playlist.txt"))) {
             stream.forEach(s -> {

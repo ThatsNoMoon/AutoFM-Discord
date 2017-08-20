@@ -9,7 +9,15 @@ import java.util.*;
 import java.util.stream.Stream;
 
 /**
- * @author Ben
+ * Class to represent a configuration, including:
+ * The bot's token
+ * The bot's prefix
+ * The bot owner's ID
+ * Whether the bot uses a stream or not, and if it does, the stream URL
+ * Whether the bot uses a YouTube playlist(s) instead of a text-based playlist, and if it does, the playlist URLs. (Work-In-Progress)
+ * Whether the bot uses DJ roles, and if it does, a list of the roles' IDs
+ * Whether the bot uses auto-join channels, and if it does, a list of the channels' IDs
+ * @author ThatsNoMoon
  */
 
 class Config {
@@ -24,7 +32,6 @@ class Config {
     private String stream = "";
 
     private boolean usesPlaylist = false;
-    private String playlist = "";
     private List<String> playlists = new ArrayList<>();
 
     private boolean usesDJRoles = false;
@@ -39,8 +46,11 @@ class Config {
         LOG.trace("Loading Config File");
         try (Stream<String> stream = Files.lines(Paths.get("./config.txt"))) {
             stream.forEach(s -> {
+                /* Trim the line so that a space at the end or beginning doesn't ruin the line */
                 s = s.trim();
 //                LOG.trace("Parsing string: " + ( s.startsWith("token:") ? s.substring(0, 15) + "..." : s ));
+
+                /* The start of the configuration setting, right after the first ':' */
                 int i = s.indexOf(':')+1;
                 if (s.startsWith("token:")) {
                     token = s.substring(i).trim();
@@ -55,13 +65,14 @@ class Config {
                     this.stream = s.substring(i).trim();
                     LOG.debug("Set stream URL to: " + this.stream);
                 }
-//                else if (s.startsWith("playlist:")) {
-//                    this.usesPlaylist = true;
-//                    this.playlists.add(s.substring(i));
-//                    LOG.debug("Added playlist, URL: " + s.substring(i));
-//                }
+                else if (s.startsWith("playlist:")) {
+                    this.usesPlaylist = true;
+                    this.playlists.add(s.substring(i));
+                    LOG.debug("Added playlist, URL: " + s.substring(i));
+                }
                 else if(s.startsWith("owner ID:")) {
                     try {
+                        /* All IDs should be parsed to longs, if this fails the ID provided was invalid */
                         ownerID = Long.parseLong(s.substring(i));
                         LOG.debug("Owner ID: " + s.substring(i));
                     }
@@ -71,6 +82,7 @@ class Config {
                 }
                 else if (s.startsWith("auto-join channels:")) {
                     usesAutoJoinChannels = true;
+                    /* Replace all spaces with empty string, split the setting by commas to allow for multiple channels */
                     String[] channelStrings = s.substring(i).replace(" ", "").split(",");
                     for (String c : channelStrings) {
                         try {

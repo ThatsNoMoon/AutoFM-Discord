@@ -23,7 +23,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
- * @author Ben
+ * Main bot class, listens for commands and manages all the configured information
+ * @author ThatsNoMoon
  */
 
 public class AutoFM extends ListenerAdapter {
@@ -32,7 +33,7 @@ public class AutoFM extends ListenerAdapter {
 
     private final Random random = new Random();
 
-    private String prefix;
+    private final String PREFIX;
 
     final boolean USES_STREAM;
     private final List<String> URLS;
@@ -49,12 +50,10 @@ public class AutoFM extends ListenerAdapter {
     private final boolean USES_DJ_ROLES;
     private final Set<Long> DJ_ROLES;
 
-    private boolean loaded = false;
-
     AutoFM(Config cfg) {
 
         LOG.info("Prefix: " + cfg.getPrefix());
-        this.prefix = cfg.getPrefix();
+        this.PREFIX = cfg.getPrefix();
 
         this.OWNER_ID = cfg.getOwnerID();
 
@@ -68,7 +67,6 @@ public class AutoFM extends ListenerAdapter {
 
         if (USES_STREAM) {
             this.URLS = null;
-            loaded = true;
         } else if (cfg.usesYTPlaylist()) {
             URLS = new ArrayList<>();
             for (String url : cfg.getPlaylists()) {
@@ -76,7 +74,6 @@ public class AutoFM extends ListenerAdapter {
             }
         } else {
             this.URLS = new AutoPlaylist().URLS;
-            loaded = true;
         }
         this.STREAM_URL = (USES_STREAM) ? cfg.getStream() : null;
 
@@ -100,12 +97,12 @@ public class AutoFM extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        if (!event.getMessage().getContent().startsWith(prefix)) return;
+        if (!event.getMessage().getContent().startsWith(PREFIX)) return;
         if (!event.getChannel().canTalk()) {
             event.getAuthor().openPrivateChannel().queue(c -> c.sendMessage("I can't send messages in that channel.").queue());
             return;
         }
-        String command = event.getMessage().getContent().split(" ", 2)[0].substring(prefix.length()).toLowerCase();
+        String command = event.getMessage().getContent().split(" ", 2)[0].substring(PREFIX.length()).toLowerCase();
         LOG.debug("Received message event from channel " + event.getChannel().getName() + ". Command: " + command);
 
         if (event.getAuthor().getIdLong() == OWNER_ID) {
@@ -265,14 +262,6 @@ public class AutoFM extends ListenerAdapter {
     public String getStreamUrl() {
         return STREAM_URL;
     }
-
-//    public boolean isLoaded() {
-//        return loaded;
-//    }
-//
-//    private void loaded() {
-//        loaded = true;
-//    }
 
     private static void deleteAfter10s(Message msg) {
         msg.delete().queueAfter(10, TimeUnit.SECONDS);

@@ -10,9 +10,18 @@ import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.login.LoginException;
 
+/**
+ * @author ThatsNoMoon
+ */
+
 public class Main {
 
     public static Logger LOG;
+
+    /**
+     * Main method to enter code
+     * @param args command-line arguments, should be either "debug" or not included.
+     */
 
     public static void main(String[] args) {
         if (args.length >= 1)
@@ -27,31 +36,23 @@ public class Main {
         startBot();
     }
 
+    /**
+     * Starts AutoFM and loads the config file
+     */
+
     static void startBot() {
         LOG.info("Starting AutoFM...");
         LOG.debug("Creating Config...");
         Config cfg = new Config();
-        JDA jda;
         try {
             LOG.debug("Creating and building JDABuilder");
-            jda = new JDABuilder(AccountType.BOT)
+            JDA jda = new JDABuilder(AccountType.BOT)
                     .setToken(cfg.getToken())
                     .setAudioSendFactory(new NativeAudioSendFactory())
                     .buildBlocking();
             AutoFM autoFM = new AutoFM(cfg);
             jda.addEventListener(autoFM);
             jda.addEventListener(new VoiceEventListener(autoFM));
-//            if (cfg.usesYTPlaylist()) {
-//                for (int i = 0; i < 60 && !autoFM.isLoaded(); i++) {
-//                    try {
-//                        Thread.sleep(100);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                autoFM.autoJoin(jda);
-//                return;
-//            }
             autoFM.autoJoin(jda);
         } catch (LoginException | InterruptedException | RateLimitedException e) {
             LOG.fatal("Failed to log in: ", e);

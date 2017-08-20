@@ -7,7 +7,8 @@ import com.thatsnomoon.autofm.internal.AudioPlayerSendHandler;
 import com.thatsnomoon.autofm.internal.TrackController;
 
 /**
- * Holder for both the player and a track scheduler for one guild.
+ * @author ThatsNoMoon
+ * Holder for both the player and a track controller for one guild.
  */
 public class GuildMusicManager {
     /**

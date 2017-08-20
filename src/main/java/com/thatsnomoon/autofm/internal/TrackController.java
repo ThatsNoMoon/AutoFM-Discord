@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * This class schedules tracks for the audio player. It contains the queue of tracks.
+ * @author ThatsNoMoon
+ * Controls the audio player for each guild
  */
 public class TrackController extends AudioEventAdapter {
     private final AudioPlayer player;
