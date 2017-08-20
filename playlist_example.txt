@@ -1,0 +1,6 @@
+# An example playlist file
+# This file is not used and can be empty (or non-existent) if a stream url is provided instead
+# Rename this file to 'playlist.txt' to use it.
+https://www.youtube.com/watch?v=3SDJljtLa84
+https://www.youtube.com/watch?v=fJ0-FV2iZH4
+https://www.youtube.com/watch?v=sEWUGNvL7uw

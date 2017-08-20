@@ -1,0 +1,30 @@
+# Input your bot's token here (you cannot remove this line):
+token:bot token here, no quotes
+
+# This is the default prefix (you can safely remove this line):
+prefix:fm!
+
+# ID of the bot owner, this user will be able to always use all bot commands, including shutdown and restart
+# This line is not required, but is highly recommended. Shutting down the bot with a method other than
+# the shutdown command is not recommended, and may have side-effects
+owner ID:your id here
+
+# Provide a stream URL to use streaming mode (remove # to use a livestream, this is an example URL):
+# If you don't include this line, your autoplaylist.txt must not be empty
+# stream:https://www.youtube.com/watch?v=some video id here
+
+# Channels to join automatically (remove # to use auto-join channels)
+# (These are example channel IDs, input your own channel IDs):
+# auto-join channels:153478420895407812,749581203457028694
+
+# Roles that can use bot commands regardless of how many users are using the bot already 
+# (remove # to use DJ roles, these are examples, don't use the provided IDs)
+#
+# Example: everyone is a DJ
+# (don't include DJ roles line)
+#
+# Example: nobody is a DJ
+# DJ roles:
+#
+# Example: 2 roles are DJ roles
+# DJ roles:715903175428016728,453208745691047234
