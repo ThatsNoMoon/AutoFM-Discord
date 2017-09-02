@@ -1,5 +1,5 @@
 # An example playlist file
-# This file is not used and can be empty (or non-existent) if a stream url is provided instead
+# This file is not used and can be empty (or non-existent) if a stream url or playlist url is provided in the config instead
 # Rename this file to 'playlist.txt' to use it.
 https://www.youtube.com/watch?v=3SDJljtLa84
 https://www.youtube.com/watch?v=fJ0-FV2iZH4

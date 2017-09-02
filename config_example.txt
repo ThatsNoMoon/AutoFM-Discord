@@ -1,3 +1,4 @@
+# You must rename this file to config.txt to start AutoFM
 # Input your bot's token here (you cannot remove this line):
 token:bot token here, no quotes
 
@@ -7,11 +8,17 @@ prefix:fm!
 # ID of the bot owner, this user will be able to always use all bot commands, including shutdown and restart
 # This line is not required, but is highly recommended. Shutting down the bot with a method other than
 # the shutdown command is not recommended, and may have side-effects
+# You can have multiple owner ID lines to add multiple owners, but be careful.
 owner ID:your id here
 
 # Provide a stream URL to use streaming mode (remove # to use a livestream, this is an example URL):
-# If you don't include this line, your autoplaylist.txt must not be empty
+# If you don't include this line or a playlist line, your playlist.txt must not be empty
 # stream:https://www.youtube.com/watch?v=some video id here
+
+# Provide a playlist URL to use a YouTube playlist (remove # to use a playlist, this is an example URL):
+# If you don't include this line or a stream line your playlist.txt must not be empty
+# You can add multiple playlist lines to add multiple YouTube playlists to AutoFM's playlist
+# playlist:https://www.youtube.com/playlist?list=playlist id here
 
 # Channels to join automatically (remove # to use auto-join channels)
 # (These are example channel IDs, input your own channel IDs):
