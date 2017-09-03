@@ -8,6 +8,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import com.thatsnomoon.autofm.internal.GuildMusicManager
+import kotlinx.coroutines.experimental.Job
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.entities.Guild
 import java.nio.file.Files
@@ -21,7 +22,7 @@ import java.util.stream.Collectors
  * Main bot class, contains all the configuration information
  */
 
-class AutoFM(jda: JDA, cfg: Config) {
+class AutoFM(private val jda: JDA, cfg: Config) {
 
     val playerManager = DefaultAudioPlayerManager()
     val musicManagers: MutableMap<Long, GuildMusicManager> = mutableMapOf()
@@ -38,6 +39,13 @@ class AutoFM(jda: JDA, cfg: Config) {
 
     val USES_DJ_ROLES = cfg.usesDJRoles
     val DJ_ROLES = cfg.roles
+
+    val USES_VOICE_TIMEOUTS = cfg.usesVoiceTimeout
+    val REJOIN_AFTER_TIMEOUT = cfg.rejoinAfterTimeout
+    val VOICE_TIMEOUT_MS = cfg.voiceTimeoutMs
+
+    private val voiceTimeouts = mutableMapOf<Long, Job>()
+    private val channelsWaitingForReconnect = mutableSetOf<Long>()
 
     init {
 
@@ -75,7 +83,38 @@ class AutoFM(jda: JDA, cfg: Config) {
          * and voice events for automatic pausing when there are
          * no users in its voice channel */
         jda.addEventListener(CommandHandler(this))
-        jda.addEventListener(VoiceEventListener(this))
+        if (USES_VOICE_TIMEOUTS)
+            jda.addEventListener(VoiceEventListenerUsingTimeouts(this))
+        else
+            jda.addEventListener(VoiceEventListener(this))
+    }
+
+    internal fun addVoiceTimeout(id: Long, job: Job) {
+        voiceTimeouts.put(id, job)
+    }
+
+    internal fun removeVoiceTimeout(id: Long) {
+        val job = voiceTimeouts[id]?: return
+        job.cancel()
+        voiceTimeouts.remove(id)
+    }
+
+    internal fun clearVoiceTimeouts() {
+        voiceTimeouts.forEach {it.value.cancel()}
+        voiceTimeouts.clear()
+    }
+
+    internal fun isChannelWaiting(id: Long): Boolean = channelsWaitingForReconnect.contains(id)
+
+    internal fun addWaitingChannel(id: Long) = channelsWaitingForReconnect.add(id)
+
+    internal fun removeWaitingChannel(id: Long) = channelsWaitingForReconnect.remove(id)
+
+    internal fun clearWaitingChannels() = channelsWaitingForReconnect.clear()
+
+    internal fun clearWaitingChannelsFromGuild(id: Long) {
+        val channelsInGuild = jda.getGuildById(id).voiceChannels.map { it.idLong }
+        channelsWaitingForReconnect.removeIf { channelsInGuild.contains(it) }
     }
 
     /* get the GuildMusicManager for the specified Guild */

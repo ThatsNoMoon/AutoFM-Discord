@@ -1,4 +1,5 @@
 # You must rename this file to config.txt to start AutoFM
+
 # Input your bot's token here (you cannot remove this line):
 token:bot token here, no quotes
 
@@ -25,7 +26,7 @@ owner ID:your id here
 # auto-join channels:153478420895407812,749581203457028694
 
 # Roles that can use bot commands regardless of how many users are using the bot already 
-# (remove # to use DJ roles, these are examples, don't use the provided IDs)
+# (Remove # to use DJ roles, these are examples, don't use the provided IDs)
 #
 # Example: everyone is a DJ
 # (don't include DJ roles line)
@@ -35,3 +36,19 @@ owner ID:your id here
 #
 # Example: 2 roles are DJ roles
 # DJ roles:715903175428016728,453208745691047234
+
+# Time to wait before leaving a voice channel, in this format:
+# 5000 for 5000 milliseconds (5 seconds)
+# 10s for 10 seconds
+# 15m for 15 minutes
+# 2h for 2 hours
+# (Remove # to use voice timeout)
+# voice timeout:30m
+
+# Whether or not to rejoin a channel when somebody joins it if the timeout was exceeded
+# This option does nothing if a voice timeout is not set
+# For example, if Bob leaves the #music channel he was in and AutoFM is now lonely and leaves after 15 minutes...
+# ...if this option is on, AutoFM will rejoin the #music channel if anyone joins the #music channel later
+# Should be yes or no
+# (Remove # to rejoin after timeout)
+# rejoin after timeout:yes

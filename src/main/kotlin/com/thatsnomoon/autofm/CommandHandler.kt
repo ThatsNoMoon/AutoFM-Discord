@@ -39,7 +39,7 @@ class CommandHandler(private val parent: AutoFM): ListenerAdapter() {
         if (OWNER_IDS.contains(event.author.idLong)) {
             when (command) {
                 "shutdown" -> {
-                    msg reply "Shutting down"
+                    msg reply "Shutting down..."
                     LOG.info("Shutting down")
                     event.jda.shutdown()
                     return
@@ -94,7 +94,7 @@ class CommandHandler(private val parent: AutoFM): ListenerAdapter() {
             }
             "summon", "join" -> {
                 if (event.guild.audioManager.isConnected && event.guild.audioManager.connectedChannel.members.size > 1 && !isDJ) {
-                    msg replyThenDelete "You must be a DJ to use `summon` when I'm already in a voice channel with others!"
+                    msg replyThenDelete "You must be a DJ to use `$command` when I'm already in a voice channel with others!"
                     return
                 }
                 msg reply "Joining ${userVC.name}..." then {

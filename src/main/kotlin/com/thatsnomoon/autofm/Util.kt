@@ -28,3 +28,21 @@ infix fun User.privateMessage(text: String): RestPromise<Message> = this.openPri
 
 val Member.isSelf: Boolean
         get() = user.isSelf
+
+fun String.toMs(): Long? {
+    if (this.toLongOrNull() != null)
+        return this.toLong()
+    val lowerCase = this.toLowerCase()
+    return when {
+        lowerCase.endsWith("h") -> {
+            substring(0 until length - 1).toLongOrNull()?.times(60)?.times(60)?.times(1000)
+        }
+        lowerCase.endsWith("m") -> {
+            substring(0 until length - 1).toLongOrNull()?.times(60)?.times(1000)
+        }
+        lowerCase.endsWith("s") -> {
+            substring(0 until length - 1).toLongOrNull()?.times(1000)
+        }
+        else -> null
+    }
+}

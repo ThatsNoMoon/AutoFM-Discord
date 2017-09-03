@@ -5,6 +5,9 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 
+private val trueSynonyms = setOf("true", "enable", "enabled", "yes", "yep", "indeed", "affirmative")
+private val falseSynonyms = setOf("false", "disable", "disabled", "no", "nope", "negative")
+
 /**
  * Class to represent a configuration, including:
  * The bot's token
@@ -36,6 +39,10 @@ class Config {
 
     val channels = mutableSetOf<Long>()
     val roles = mutableSetOf<Long>()
+
+    var usesVoiceTimeout = false
+    var voiceTimeoutMs: Long = 0
+    var rejoinAfterTimeout = false
 
     init {
         if (!Files.exists(Paths.get("./config.txt"))) {
@@ -98,6 +105,21 @@ class Config {
                         } else
                             LOG.error("Invalid role ID: $it")
                     } }
+                }
+                it.startsWith("voice timeout:") -> {
+                    if (option.toMs() != null) {
+                        voiceTimeoutMs = option.toMs() as Long
+                        usesVoiceTimeout = true
+                    } else
+                        LOG.error("Invalid timeout amount: $option")
+                }
+                it.startsWith("rejoin after timeout:") -> {
+                    when {
+                        trueSynonyms.contains(option) -> rejoinAfterTimeout = true
+                        falseSynonyms.contains(option) -> rejoinAfterTimeout = false
+                        else -> LOG.error("Invalid option for 'rejoin after timeout': $option")
+                    }
+
                 }
             }
         } }
