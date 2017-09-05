@@ -37,7 +37,7 @@ owner ID:your id here
 # Example: 2 roles are DJ roles
 # DJ roles:715903175428016728,453208745691047234
 
-# Time to wait before leaving a voice channel, in this format:
+# Time to wait before leaving a voice channel when there are no other users, in this format:
 # 5000 for 5000 milliseconds (5 seconds)
 # 10s for 10 seconds
 # 15m for 15 minutes
